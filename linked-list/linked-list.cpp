@@ -15,11 +15,9 @@ void printList(){
     Node* listTraverser = listHeadAddress;      
     // Q: What does listHeadAddress store and why? 
     // Ans: Stores whatever is the address of the first node atm, since global variables are stored seperately in memory and can be modified
-    // from anywhere in the program and destroyed only when program finishes execution, hence listTraverser stored the copies the copy from 
-    // that global variable
+    // from anywhere in the program and destroyed only when program finishes execution, hence listTraverser stores a copy from that global variable
 
     // cout << listHeadAddress << endl;
-    // cout << headptr << endl;
     // cout << listTraverser->value << endl;
     // cout << headptr->next->value << endl;
 
@@ -37,7 +35,7 @@ void printList(){
 // In the following two functions and the reverseListRecursive function we have added listTraverser as a parameter for 2 reasons:
 // 1. So that we don't have to use the listHeadAddress itself thereby modifing its value instead passing its value as a copy
 // 2. We haven't made the listTraverser as a local variable in the function body because it will be intialised for every call 
-// and make an infinite loop because it always points to(stores address of) the first node
+// and make an infinite loop because it will always points to(stores address of) the first node
 void printListRecursive(Node* listTraverser){
 
     // Checking if list traverser is pointing to null(i.e storing null as address). If true return and don't continue further
@@ -66,7 +64,7 @@ void printListReverseRecursive(Node* listTraverser){
 
 void addNodeAtEnd(int val){
 
-    // Make a new Node and assign it the value
+    // Making a new Node and assigning it the value
     Node* newNode = new Node();
     newNode->value = val;
 
@@ -75,7 +73,7 @@ void addNodeAtEnd(int val){
 
     // cout << listTraverser << endl;
 
-    // Looping till we reach the current last node (as its will point to null)
+    // Looping till we reach the current last node (as its next will point to null)
     while(listTraverser->next != nullptr){
         listTraverser = listTraverser->next;
     }
@@ -90,10 +88,10 @@ void addNodeAtEnd(int val){
 
 void addNodeAtFront(int val){
 
-    // Make a new Node and assign it the value
+    // Making a new Node and assigning it the value
     Node* newNode = new Node();
     newNode->value = val;
-    // Making the new Node point to the current first/head node of the list / Store the address of the current first/head of the list 
+    // Making the new Node point to(store the address of) the current first/head node of the list
     newNode->next = listHeadAddress;
 
     // Making the new Node the new first/head node of the list / Making listHeadAddress pointer store address of the new Node
@@ -107,11 +105,11 @@ void addNodeAtFront(int val){
 
 void addNodeAtPosition(int val, int pos){
 
-    // Create a new Node and assign it the value;
+    // Making a new Node and assigning it the value
     Node* newNode = new Node();
     newNode->value = val;
 
-    // Checking whether to insert at the first position or not
+    // Condition to check whether node is to be inserted at the first position or not
     if(pos == 1){
 
         // Making the new Node point to(i.e store address of) the original first node(currently stored in listHeadAddress)
@@ -123,12 +121,12 @@ void addNodeAtPosition(int val, int pos){
         return;
     }
 
-    // Making a list traverser variable
+    // Making a list traverser variable and copying the address of the first node
     Node* listTraverser = listHeadAddress;
 
     // Looping till we get the address of the (n-1)th node i.e the last node after which we insert the new Node at position n
     // Q. Why n-2?
-    // Ans: So what we end up with the (n-1)th node's address stored in listTraverser which will later change links
+    // Ans: So that we end up with the (n-1)th node's address stored in listTraverser which will later change links
     for(int i = 0; i < pos-2; i++){
         listTraverser = listTraverser->next;
     } 
@@ -144,7 +142,6 @@ void addNodeAtPosition(int val, int pos){
 
     // The order of those 2 statments is important because if we do them in reverse, we would lose the address of the current nth node 
     // and hence cannot establish the link between it and the new node
-
 }
 
 void deleteNodeAtEnd(){
@@ -198,7 +195,15 @@ void deleteNodeAtPosition(int pos){
 
     // Checking whether to delete node at the first/head position or not
     if(pos == 1){
-        deleteNodeAtFront();
+        // Storing the address of the current first/head node
+        Node* firstNode = listHeadAddress;
+        // Making the listHeadAddress point to(store address of) the second node thereby making it the new first/head node
+        listHeadAddress = firstNode->next;
+
+        // Deleting/Deallocating the memory of the original first/head node
+        delete firstNode;
+        // Making firstNode point to null so it no longer has address of the deleted node
+        firstNode = nullptr;
         return;
     }
 
@@ -207,7 +212,7 @@ void deleteNodeAtPosition(int pos){
 
     // Looping till we get the address of the (n-1)th node i.e the last node after which we delete the node at position n
     // Q. Why n-2?
-    // Ans: So what we end up with the (n-1)th node's address stored in listTraverser which will later change links
+    // Ans: So that we end up with the (n-1)th node's address stored in listTraverser which will later change links
     for(int i = 0; i < pos-2; i++){
         listTraverser = listTraverser->next;
     } 
@@ -253,7 +258,7 @@ void deleteList(){
         // cout << "toBeDeleted: " << toBeDeleted << endl;
         // cout << "Value: " << toBeDeleted->value << endl;
         
-        // Making the subsecquent next node the head node
+        // Making the subsequent next node the head node
         listHeadAddress = nextNode;
         // Deallocating memory/Deleting the previous head node
         delete toBeDeleted;
@@ -282,7 +287,7 @@ void deleteList(){
 
 void deleteListRecursive(Node* listTraverser){
 
-    // Counter to count the number of function calls that pushed/popped on the call stack
+    // Counter to count the number of function calls that are pushed/popped on the call stack
     static int counter = 0;
 
     // Checking if list traverser is pointing to null(i.e storing null as address). If true return and don't continue further
@@ -331,7 +336,7 @@ void reverseList(){
     // For storing the next node
     Node* nextNode;
 
-    // Looping till we reach current points to null
+    // Looping till current points to null
     while(current != nullptr){
 
         // Assigning nextNode the address of whatever is stored in the next variable of current node
@@ -349,7 +354,7 @@ void reverseList(){
 
 void reverseListRecursive(Node* listTraverser){
 
-    // Condition to check if the node points to null or not
+    // Condition to check if the node's next points to null or not
     if(listTraverser->next == nullptr){
         // Since condition is true, listTraverser point to(stores address of) the current last node which is now made first/head node
         listHeadAddress = listTraverser;
